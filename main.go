@@ -10,6 +10,7 @@ import (
 var version = "dev"
 
 const ACTION_COVERAGE = "coverage"
+const ACTION_VERSION = "version"
 
 func main() {
 	if len(os.Args) < 2 {
@@ -17,6 +18,11 @@ func main() {
 		return
 	}
 	action := os.Args[1]
+
+	if action == ACTION_VERSION {
+		fmt.Printf("cover-totalizer version %s\n", version)
+		os.Exit(0)
+	}
 
 	if action == ACTION_COVERAGE {
 		coverage()
