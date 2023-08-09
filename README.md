@@ -11,15 +11,3 @@ curl -sLk https://raw.githubusercontent.com/kevincobain2000/cover-totalizer/mast
 ```sh
 cover-totalizer coverage {path to clover.xml or coverage.xml file}
 ```
-
-## Node modules size
-
-TODO
-
-## PHP modules size
-
-TODO
-
-## Perf stats
-
-TODO
