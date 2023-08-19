@@ -9,12 +9,11 @@ import (
 
 var version = "dev"
 
-const ACTION_COVERAGE = "coverage"
 const ACTION_VERSION = "version"
 
 func main() {
-	if len(os.Args) < 2 {
-		fmt.Printf("Usage: cover-totalizer <action>\n")
+	if len(os.Args) < 1 {
+		fmt.Printf("Usage: cover-totalizer <path/to/coverage.xml>\n")
 		return
 	}
 	action := os.Args[1]
@@ -24,19 +23,11 @@ func main() {
 		os.Exit(0)
 	}
 
-	if action == ACTION_COVERAGE {
-		coverage()
-		os.Exit(0)
-	}
+	coverage(action)
 }
 
-func coverage() {
-	if len(os.Args) < 3 {
-		fmt.Printf("Usage: cover-totalizer %s <coverage.xml>\n", os.Args[1])
-		return
-	}
-	xmlFilePath := os.Args[2]
-	total, err := pkg.NewCoverageService().ParseCoveragePercentage(xmlFilePath)
+func coverage(xmlPath string) {
+	total, err := pkg.NewCoverageService().ParseCoveragePercentage(xmlPath)
 	if err != nil {
 		fmt.Printf("Error: %s\n", err.Error())
 		return
