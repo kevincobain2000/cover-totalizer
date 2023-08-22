@@ -30,5 +30,32 @@ jobs:
           staticcheck ./...
           gosec ./...
           gocyclo -over 15 ./
+
       - name: Test
-        run: go test -race -v ./... -count=1 -coverprofile=coverage.txt -covermode=atomic
+        run: |
+          mkdir -p build
+          go test -race -v ./... -count=1 -coverprofile=coverage.out -covermode=atomic
+
+      - name: Coverage
+        run: |
+          go tool cover -html=build/coverage.out -o build/coverage.html
+          gocov convert build/coverage.out | gocov-xml > build/coverage.xml
+
+      #Coveritup
+      - name: Code Coverage
+        run: |
+          curl -sLk https://raw.githubusercontent.com/kevincobain2000/cover-totalizer/master/install.sh | sh
+          echo SCORE=`./cover-totalizer build/coverage.xml` >> "$GITHUB_ENV"
+
+      - name: Go Binary Size
+        run: |
+          echo SCORE=`du -sk main | awk '{print $1}'` >> "$GITHUB_ENV"
+
+      - uses: kevincobain2000/action-coveritup@v1
+        with:
+          type: go-binary-size
+
+      - uses: kevincobain2000/action-coveritup@v1
+        with:
+          pr_comment: true
+
