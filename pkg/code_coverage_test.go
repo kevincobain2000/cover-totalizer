@@ -36,6 +36,12 @@ func TestParseCoveragePercentage(t *testing.T) {
 			errWant:         nil,
 		},
 		{
+			language:        "zero",
+			coverageXMLPath: "../test_data/clover_coverage_zero.xml",
+			wantPercentage:  0.0,
+			errWant:         nil,
+		},
+		{
 			language:        "java",
 			coverageXMLPath: "../test_data/java_coverage.xml",
 			wantPercentage:  63.04,
@@ -47,6 +53,28 @@ func TestParseCoveragePercentage(t *testing.T) {
 			s := NewCoverageService()
 			got, err := s.ParseCoveragePercentage(test.coverageXMLPath)
 			assert.Equal(t, test.errWant, err)
+			assert.Equal(t, test.wantPercentage, got)
+
+		})
+	}
+}
+func TestParseCoverageError(t *testing.T) {
+	tests := []struct {
+		language        string
+		coverageXMLPath string
+		wantPercentage  float64
+	}{
+		{
+			language:        "none",
+			coverageXMLPath: "../test_data/parse_error.xml",
+			wantPercentage:  0.0,
+		},
+	}
+	for _, test := range tests {
+		t.Run(test.language, func(t *testing.T) {
+			s := NewCoverageService()
+			got, err := s.ParseCoveragePercentage(test.coverageXMLPath)
+			assert.NotNil(t, err)
 			assert.Equal(t, test.wantPercentage, got)
 
 		})

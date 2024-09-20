@@ -2,7 +2,6 @@ package pkg
 
 import (
 	"encoding/xml"
-	"fmt"
 	"math"
 	"os"
 	"strconv"
@@ -66,8 +65,7 @@ func (s *CoverageService) ParseCoveragePercentage(coverageXMLPath string) (float
 		return percentage, nil
 	}
 
-	err = fmt.Errorf("unable to parse coverage file")
-	return 0.0, err
+	return 0.0, nil
 }
 
 func (s *CoverageService) parseClover(coverageXMLPath string) (float64, error) {
